@@ -49,7 +49,7 @@ func init() {
 
 	// 日志文件计算
 	go func() {
-		timeLocation, _ := time.LoadLocation("Asia/ChongQing");
+		timeLocation, _ := time.LoadLocation("Asia/Chongqing");
 		now := time.Now()
 		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timeLocation);
 

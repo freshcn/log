@@ -9,6 +9,7 @@ import (
 	"time"
 	"runtime"
 	"strings"
+	"go/build"
 )
 
 const (
@@ -49,7 +50,10 @@ func init() {
 
 	// 日志文件计算
 	go func() {
-		timeLocation, _ := time.LoadLocation("Asia/Chongqing");
+		timeLocation, err := time.LoadLocation("Asia/Chongqing");
+		if err != nil {
+			log.Println(err)
+		}
 		now := time.Now()
 		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timeLocation);
 
@@ -93,20 +97,20 @@ func SetDebug(debugs bool) {
 
 // 写入错误
 func Error(msg interface{}) {
-	_, filePath, line, _ := runtime.Caller(0)
-	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, runDir, "", 1), line, msg)
+	_, filePath, line, _ := runtime.Caller(1)
+	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
 }
 
 // 写入信息
 func Info(msg interface{}) {
-	log.SetPrefix(INFO)
-	log.Println(msg)
+	_, filePath, line, _ := runtime.Caller(1)
+	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
 }
 
 // 写入警告
 func Warring(msg interface{}) {
-	log.SetPrefix(WARRING)
-	log.Println(msg)
+	_, filePath, line, _ := runtime.Caller(1)
+	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
 }
 
 // 获取日志文件

@@ -121,7 +121,7 @@ func Warring(msg interface{}) {
 // 显示 panic
 func Panic(msg interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Panicf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
+	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
 }
 
 // 获取日志文件

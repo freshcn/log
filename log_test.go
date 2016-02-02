@@ -10,5 +10,7 @@ func TestLogFile(t *testing.T) {
 	fmt.Println(file.Name())
 	SetDebug(true)
 	Error("这是一个错误")
+	Warring("这是一个警告")
+	Info("这是一个信息")
 	time.Sleep(100*time.Second)
 }

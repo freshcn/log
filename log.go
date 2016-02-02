@@ -75,7 +75,11 @@ func init() {
 // 写入数据到文件中
 func (this *data) Write(p []byte) (int, error) {
 	if this.debug {
-		fmt.Println(string(p))
+		pStr := string(p)
+		pStr = strings.Replace(pStr, fmt.Sprintf("[%s]", ERROR), fmt.Sprintf("[\033[31m%s\033[0m]", ERROR), 1)
+		pStr = strings.Replace(pStr, fmt.Sprintf("[%s]", WARRING), fmt.Sprintf("[\033[33m%s\033[0m]", WARRING), 1)
+		pStr = strings.Replace(pStr, fmt.Sprintf("[%s]", INFO), fmt.Sprintf("[\033[32m%s\033[0m]", INFO), 1)
+		fmt.Print(pStr)
 	}
 	return this.filePath.Write(p)
 }

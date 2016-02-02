@@ -16,6 +16,7 @@ const (
 	ERROR   = "error"
 	INFO    = "info"
 	WARRING = "warring"
+	PANIC = "panic"
 )
 
 // 日志数据处理
@@ -115,6 +116,12 @@ func Info(msg interface{}) {
 func Warring(msg interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
 	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
+}
+
+// 显示 panic
+func Panic(msg interface{}) {
+	_, filePath, line, _ := runtime.Caller(1)
+	log.Panicf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
 }
 
 // 获取日志文件

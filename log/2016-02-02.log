@@ -1,0 +1,6 @@
+[error] 2016-02-02 11:26:54 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
+[warring] 2016-02-02 11:26:54 /src/git.name.im/chenzhouyu/log.git/log_test.go:13 这是一个警告
+[info] 2016-02-02 11:26:54 /src/git.name.im/chenzhouyu/log.git/log_test.go:14 这是一个信息
+[error] 2016-02-02 11:30:30 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
+[warring] 2016-02-02 11:30:30 /src/git.name.im/chenzhouyu/log.git/log_test.go:13 这是一个警告
+[info] 2016-02-02 11:30:30 /src/git.name.im/chenzhouyu/log.git/log_test.go:14 这是一个信息

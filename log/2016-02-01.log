@@ -1,9 +1,0 @@
-[error] 2016-02-01 18:34:00 /log.go:99 这是一个错误
-[error] 2016-02-01 18:54:06 /log.go:99 这是一个错误
-[error] 2016-02-01 18:54:15 /log_test.go:12 这是一个错误
-[error] 2016-02-01 18:57:14 [/Users/chenzhouyu/go/src/git.name.im/chenzhouyu/log.git/log_test.go]:12 这是一个错误
-[error] 2016-02-01 19:13:16 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
-[error] 2016-02-01 19:14:45 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
-[error] 2016-02-01 19:15:55 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
-[error] 2016-02-01 19:23:01 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误
-[error] 2016-02-01 19:27:54 /src/git.name.im/chenzhouyu/log.git/log_test.go:12 这是一个错误

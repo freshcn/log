@@ -104,25 +104,25 @@ func SetDebug(debugs bool) {
 // 写入错误
 func Error(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg))
+	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
 // 写入信息
 func Info(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg))
+	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
 // 写入警告
 func Warring(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg))
+	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
 // 显示 panic
-func Panic(msg interface{}) {
+func Panic(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, msg)
+	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
 // 获取日志文件

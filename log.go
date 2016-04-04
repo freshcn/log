@@ -2,21 +2,21 @@ package log
 
 import (
 	"fmt"
+	"go/build"
 	sysLog "log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"time"
 	"runtime"
 	"strings"
-	"go/build"
+	"time"
 )
 
 const (
 	ERROR   = "error"
 	INFO    = "info"
 	WARRING = "warring"
-	PANIC = "panic"
+	PANIC   = "panic"
 )
 
 // 日志数据处理
@@ -35,7 +35,7 @@ var logData data
 var runDir string
 
 func init() {
-	runDir = RunDir();
+	runDir = RunDir()
 
 	logFilePath, err := logFile()
 	if err != nil {
@@ -51,12 +51,12 @@ func init() {
 
 	// 日志文件计算
 	go func() {
-		timeLocation, err := time.LoadLocation("Asia/Chongqing");
+		timeLocation, err := time.LoadLocation("Asia/Chongqing")
 		if err != nil {
 			log.Println(err)
 		}
 		now := time.Now()
-		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timeLocation);
+		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timeLocation)
 
 		time.Sleep(time.Duration(tomorrow.Unix()-now.Unix()) * time.Second)
 		for {
@@ -107,10 +107,20 @@ func Error(msg ...interface{}) {
 	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
+// Errorf 格式化错误信息输出
+func Errorf(format string, msg ...interface{}) {
+	Error(fmt.Sprintf(format, msg...))
+}
+
 // Info 写入信息
 func Info(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
 	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+}
+
+// Infof 格式化信息输出
+func Infof(format string, msg ...interface{}) {
+	Info(fmt.Sprintf(format, msg...))
 }
 
 // Warring 写入警告
@@ -119,10 +129,20 @@ func Warring(msg ...interface{}) {
 	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
 }
 
+// Warringf 格式化错误信息输出
+func Warringf(format string, msg ...interface{}) {
+	Warring(fmt.Sprintf(format, msg...))
+}
+
 // Panic 显示 panic
 func Panic(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
 	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+}
+
+// Panicf 格式化panic信息输出
+func Panicf(format string, msg ...interface{}) {
+	Panic(fmt.Sprintf(format, msg...))
 }
 
 // logFile 获取日志文件

@@ -111,6 +111,7 @@ func Error(msg ...interface{}) {
 func Errorf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(2)
 	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+}
 
 // Info 写入信息
 func Info(msg ...interface{}) {

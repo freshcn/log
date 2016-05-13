@@ -110,7 +110,7 @@ func Error(msg ...interface{}) {
 // Errorf 格式化错误信息输出
 func Errorf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
 }
 
 // Info 写入信息
@@ -122,7 +122,7 @@ func Info(msg ...interface{}) {
 // Infof 格式化信息输出
 func Infof(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
 }
 
 // Warring 写入警告
@@ -134,7 +134,7 @@ func Warring(msg ...interface{}) {
 // Warringf 格式化错误信息输出
 func Warringf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
 }
 
 // Panic 显示 panic
@@ -146,7 +146,7 @@ func Panic(msg ...interface{}) {
 // Panicf 格式化panic信息输出
 func Panicf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
 }
 
 // logFile 获取日志文件

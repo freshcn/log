@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"go/build"
+	"io"
 	sysLog "log"
 	"os"
 	"os/exec"
@@ -185,4 +186,9 @@ func RunDir() string {
 	}
 
 	return filepath.Dir(rootDir)
+}
+
+// 返回
+func LogWriter() io.Writer {
+	return &logData
 }

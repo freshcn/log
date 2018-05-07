@@ -14,10 +14,14 @@ import (
 )
 
 const (
-	ERROR   = "error"
-	INFO    = "info"
+	// ERROR 错误类型
+	ERROR = "error"
+	// INFO 普通信息
+	INFO = "info"
+	// WARRING 警告信息
 	WARRING = "warring"
-	PANIC   = "panic"
+	// PANIC 恐慌信息
+	PANIC = "panic"
 )
 
 // 日志数据处理
@@ -26,18 +30,16 @@ type data struct {
 	debug    bool
 }
 
-// 日志对象
-var log *sysLog.Logger
-
-// 日志数据对象
-var logData data
-
-// 程序的运行目录
-var runDir string
+var (
+	// 日志数据对象
+	logData data
+	// 日志对象
+	log *sysLog.Logger
+	// pathSeparator 系统的目录间隔符
+	pathSeparator = string(os.PathSeparator)
+)
 
 func init() {
-	runDir = RunDir()
-
 	logFilePath, err := logFile()
 	if err != nil {
 		panic(err)
@@ -52,16 +54,12 @@ func init() {
 
 	// 日志文件计算
 	go func() {
-		timeLocation, err := time.LoadLocation("Asia/Chongqing")
-		if err != nil {
-			log.Println(err)
-		}
-		now := time.Now()
-		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timeLocation)
+		now := time.Now().In(timezone)
+		tomorrow := time.Date(now.Year(), now.Month(), now.Day()+1, 0, 0, 0, 0, timezone)
 
 		time.Sleep(time.Duration(tomorrow.Unix()-now.Unix()) * time.Second)
 		for {
-			timeName := fmt.Sprintf("%s.log", time.Now().Format("2006-01-02"))
+			timeName := fmt.Sprintf("%s.log", time.Now().In(timezone).Format("2006-01-02"))
 			if timeName != logData.FileName() {
 				if logFilePath, err := logFile(); err == nil {
 					logData.CloseFile()
@@ -97,7 +95,7 @@ func (d *data) CloseFile() {
 	d.filePath.Close()
 }
 
-// 设置是否为 debug 模式
+// SetDebug 设置是否为 debug 模式
 func SetDebug(debugs bool) {
 	logData.debug = debugs
 }
@@ -105,54 +103,90 @@ func SetDebug(debugs bool) {
 // Error 写入错误
 func Error(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf(formatLayout(), ERROR, formatTime(), formatFilePath(filePath, line), fmt.Sprint(msg...))
 }
 
 // Errorf 格式化错误信息输出
 func Errorf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", ERROR, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
+	log.Printf(formatLayout(), ERROR, formatTime(), formatFilePath(filePath, line), fmt.Sprintf(format, msg...))
 }
 
 // Info 写入信息
 func Info(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf(formatLayout(), INFO, formatTime(), formatFilePath(filePath, line), fmt.Sprint(msg...))
 }
 
 // Infof 格式化信息输出
 func Infof(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", INFO, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
+	log.Printf(formatLayout(), INFO, formatTime(), formatFilePath(filePath, line), fmt.Sprintf(format, msg...))
 }
 
 // Warring 写入警告
 func Warring(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Printf(formatLayout(), WARRING, formatTime(), formatFilePath(filePath, line), fmt.Sprint(msg...))
 }
 
 // Warringf 格式化错误信息输出
 func Warringf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Printf("[%s] %s %s:%d %s", WARRING, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
+	log.Printf(formatLayout(), WARRING, formatTime(), formatFilePath(filePath, line), fmt.Sprintf(format, msg...))
 }
 
 // Panic 显示 panic
 func Panic(msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprint(msg...))
+	log.Panicf(formatLayout(), PANIC, formatTime(), formatFilePath(filePath, line), fmt.Sprint(msg...))
 }
 
 // Panicf 格式化panic信息输出
 func Panicf(format string, msg ...interface{}) {
 	_, filePath, line, _ := runtime.Caller(1)
-	log.Panicf("[%s] %s %s:%d %s", PANIC, time.Now().Format("2006-01-02 15:04:05"), strings.Replace(filePath, build.Default.GOPATH, "", 1), line, fmt.Sprintf(format, msg...))
+	log.Panicf(formatLayout(), PANIC, formatTime(), formatFilePath(filePath, line), fmt.Sprintf(format, msg...))
+}
+
+// formatLayout 初始化显示格式
+func formatLayout() (l string) {
+	if config.ShowFilePath {
+		l = "[%s] %s %s %s"
+	} else {
+		l = "[%s] %s%s%s"
+	}
+	return
+}
+
+// formatTime 格式化时间
+func formatTime() (t string) {
+	return time.Now().In(timezone).Format(config.TimeFormat)
+}
+
+// formatFilePath 处理文件地址
+func formatFilePath(filepath string, line int) string {
+	// 是否显示
+	if !config.ShowFilePath {
+		return " "
+	}
+
+	// 是否显示为长路径
+	if !config.ShortFilePath {
+		return fmt.Sprintf("%s:%d", filepath, line)
+	}
+
+	filepath = strings.TrimPrefix(filepath, fmt.Sprintf("%s%ssrc%s", build.Default.GOPATH, pathSeparator, pathSeparator))
+	if config.GOPATHDeep > 0 {
+		if tmp := strings.Split(filepath, pathSeparator); len(tmp) >= config.GOPATHDeep {
+			filepath = strings.Join(tmp[config.GOPATHDeep:], pathSeparator)
+		}
+	}
+	return fmt.Sprintf("%s:%d", filepath, line)
 }
 
 // logFile 获取日志文件
 func logFile() (*os.File, error) {
-	rootDir := fmt.Sprintf("%s/log/", runDir)
+	rootDir := fmt.Sprintf("%s%slog%s", config.FilePath, pathSeparator, pathSeparator)
 	logFilePath := fmt.Sprintf("%s%s.log", rootDir, time.Now().Format("2006-01-02"))
 
 	fileinfo, err := os.Stat(rootDir)
@@ -188,7 +222,7 @@ func RunDir() string {
 	return filepath.Dir(rootDir)
 }
 
-// 返回
+// LogWriter 返回
 func LogWriter() io.Writer {
 	return &logData
 }

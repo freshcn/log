@@ -59,11 +59,13 @@ func init() {
 
 		time.Sleep(time.Duration(tomorrow.Unix()-now.Unix()) * time.Second)
 		for {
-			timeName := fmt.Sprintf("%s.log", time.Now().In(timezone).Format("2006-01-02"))
-			if timeName != logData.FileName() {
-				if logFilePath, err := logFile(); err == nil {
-					logData.CloseFile()
-					logData.filePath = logFilePath
+			if !logData.debug {
+				timeName := fmt.Sprintf("%s.log", time.Now().In(timezone).Format("2006-01-02"))
+				if timeName != logData.FileName() {
+					if logFilePath, err := logFile(); err == nil {
+						logData.CloseFile()
+						logData.filePath = logFilePath
+					}
 				}
 			}
 			// 开始处理休眠到一次应该的启动的时候

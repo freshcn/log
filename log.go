@@ -195,7 +195,7 @@ func logFile() (*os.File, error) {
 	fileinfo, err := os.Stat(rootDir)
 	// 当文件夹不存在时
 	if err != nil && os.IsNotExist(err) {
-		if err = os.MkdirAll(rootDir, 0700); err != nil {
+		if err = os.MkdirAll(rootDir, 0766); err != nil {
 			panic(err)
 		}
 	} else if err != nil { // 文件夹存在,不过出现了错误

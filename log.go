@@ -32,7 +32,7 @@ type data struct {
 
 var (
 	// 日志数据对象
-	logData data
+	logData = data{}
 	// 日志对象
 	log *sysLog.Logger
 	// pathSeparator 系统的目录间隔符
@@ -40,15 +40,6 @@ var (
 )
 
 func init() {
-	logFilePath, err := logFile()
-	if err != nil {
-		panic(err)
-	}
-
-	logData = data{
-		filePath: logFilePath,
-		debug:    false,
-	}
 
 	log = sysLog.New(&logData, "", 0)
 
@@ -84,6 +75,14 @@ func (d *data) Write(p []byte) (int, error) {
 		pStr = strings.Replace(pStr, fmt.Sprintf("[%s]", INFO), fmt.Sprintf("[\033[32m%s\033[0m]", INFO), 1)
 		fmt.Print(pStr)
 		return 0, nil
+	}
+
+	if d.filePath == nil {
+		logFilePath, err := logFile()
+		if err != nil {
+			panic(err)
+		}
+		d.filePath = logFilePath
 	}
 	return d.filePath.Write(p)
 }
